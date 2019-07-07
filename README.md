@@ -22,6 +22,10 @@ And then execute:
 Or install it yourself as:
 
     $ gem install jekyll-books
+    
+## Usage
+
+[Usage](https://github.com/erlzhang/jekyll-theme-persephone/blob/master/docs/books.md)
 
 ## Contributing
 
