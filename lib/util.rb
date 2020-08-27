@@ -14,4 +14,11 @@ module Util
       book["date"] = "#{book["start"]}-#{book["end"]}"
     end
   end
+
+  def Util.cover_default(default, params)
+    for key in default
+      default[key] = params[key] unless params[key].nil?
+    end
+    default
+  end
 end

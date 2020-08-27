@@ -1,3 +1,5 @@
+require "jekyll-books/book_writer"
+
 module Jekyll
   module Commands
     class Book < Command
@@ -9,7 +11,12 @@ module Jekyll
           add_options(c)
   
           c.action do |args, options|
-            puts "Here we create a new book!"
+            configs = Jekyll.configuration()
+            BookWriter.new(
+              options["name"],
+              File.join(configs["source"], "_books"),
+              options
+            ).run
           end
         end
       end
@@ -17,6 +24,7 @@ module Jekyll
       def self.add_options(cmd)
         cmd.option "name", "-n", "--name NAME"
         cmd.option "title", "-t", "--title TITLE"
+        cmd.option "forced", "-f", "--forced"
       end
     end
   end

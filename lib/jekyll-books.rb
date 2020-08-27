@@ -1,2 +1,2 @@
-require "generators/book"
-require "commands/book"
+require "jekyll/generators/book"
+require "jekyll/commands/book"
