@@ -4,14 +4,31 @@ require "util"
 module Jekyll
   class BooksGenerator < Generator
     def generate(site)
-      parser = BooksParser.new("_books", site)
-      parser.parse
+      params = get_params(site)
+
+      parser = BooksParser.new(params["source"], site)
+      parser.parse(params)
       site.pages += parser.pages
 
       books = parser.books
       books += get_books_from_data(site)
       sort_books_by_date(books)
       site.config["books"] = books
+    end
+
+    def get_params(site)
+      default_setting = {
+        "source" => "_books",
+        "destination" => "/",
+        "book" => {
+          "layout" => "book"
+        },
+        "chapter" => {
+          "layout" => "chapter"
+        }
+      }
+
+      default_setting.merge(site.config["books_settings"] || {})
     end
 
     private

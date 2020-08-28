@@ -1,0 +1,10 @@
+books_settings:
+  # 自动读取书籍的目录
+  source: "_books"
+  # 生成书籍的根目录
+  destination: "/"
+  # 书籍首页的默认布局
+  book:
+    layout: "book"
+  chapter:
+    layout: "chapter"

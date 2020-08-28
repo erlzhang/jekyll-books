@@ -14,11 +14,11 @@ class BooksParser
     File.join(site.source, root)
   end
 
-  def parse
+  def parse(params)
     Dir.foreach(root_path) do |book_dir|
       book_path = File.join(root_path, book_dir)
       if File.directory?(book_path) and book_dir.chars.first != "."
-        pages = BookReader.new(root, site, book_dir).read
+        pages = BookReader.new(params, site, book_dir).read
         books << pages[0]
         @pages += pages
       end

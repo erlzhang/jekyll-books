@@ -3,15 +3,17 @@ require "jekyll/pages/book"
 require_relative "summary"
 
 class BookReader
-  attr_reader :root, :site, :name
+  attr_reader :root, :site, :name, :destination, :params
   attr_accessor :index, :pages
 
-  def initialize(root, site, name)
-    @root = root
-    @site = site
-    @name = name
-    @index = 0
-    @pages = []
+  def initialize(params, site, name)
+    @root        = params["source"]
+    @destination = params["destination"]
+    @params      = params
+    @site        = site
+    @name        = name
+    @index       = 0
+    @pages       = []
   end
 
   def read
@@ -32,8 +34,8 @@ class BookReader
       chapter = chapters[index]
       return unless chapter
 
-      if chapter[:level] > level
-        recursive_read_chapters(chapters, chapter[:level], page)
+      if chapter["level"] > level
+        recursive_read_chapters(chapters, chapter["level"], page)
       else
         page = read_chapter(chapter)
         pages << page
@@ -41,7 +43,7 @@ class BookReader
       end
 
       @index += 1
-    end while chapter[:level] >= level
+    end while chapter["level"] >= level
   end
 
   def add_prev_and_next
@@ -56,11 +58,10 @@ class BookReader
   end
 
   def read_chapter(chapter)
-    path = File.join("_books", name, chapter[:link])
-    page = Jekyll::ChapterPage.new(site, site.source, path, File.join(name, chapter[:link]))
-    page.data["link"]  = chapter[:link]
-    page.data["level"] = chapter[:level]
-    page.data["title"] = chapter[:title]
+    page = Jekyll::ChapterPage.new(
+      site,
+      params.merge({"name" => name}).merge(chapter)
+    )
     page.data["book"] = book_page
     page
   end
@@ -74,6 +75,11 @@ class BookReader
   end
 
   def book_page
-    @book_page ||= Jekyll::BookPage.new(site, site.source, root, name)
+    @book_page ||= Jekyll::BookPage.new(
+      site,
+      params.merge({
+        "name" => name
+      })
+    )
   end
 end

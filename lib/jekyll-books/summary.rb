@@ -83,9 +83,9 @@ class Summary
 
   def parse_chapter(chapter, level)
     {
-      link: chapter.xpath("a/@href").to_s,
-      title: chapter.xpath("a/text()").to_s,
-      level: level
+      "link" => chapter.xpath("a/@href").to_s,
+      "title" => chapter.xpath("a/text()").to_s,
+      "level" => level
     }
   end
 
