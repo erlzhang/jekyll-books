@@ -28,14 +28,14 @@ class BookReader
 
   def recursive_read_chapters(chapters, level, parent)
     page = parent
-    chapter = parent
+    chapter = chapters[index]
 
-    begin
-      chapter = chapters[index]
-      return unless chapter
+    while chapter do
+      break if chapter["level"] < level
 
       if chapter["level"] > level
         recursive_read_chapters(chapters, chapter["level"], page)
+        @index -= 1
       else
         page = read_chapter(chapter)
         pages << page
@@ -43,7 +43,8 @@ class BookReader
       end
 
       @index += 1
-    end while chapter["level"] >= level
+      chapter = chapters[index]
+    end
   end
 
   def add_prev_and_next
@@ -60,7 +61,10 @@ class BookReader
   def read_chapter(chapter)
     page = Jekyll::ChapterPage.new(
       site,
-      params.merge({"name" => name}).merge(chapter)
+      params.merge({
+        "chapter" => chapter.merge(params["chapter"]),
+        "name" => name
+      }).merge(chapter)
     )
     page.data["book"] = book_page
     page
