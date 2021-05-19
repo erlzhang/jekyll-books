@@ -8,3 +8,10 @@ books_settings:
     layout: "book"
   chapter:
     layout: "chapter"
+  # 是否自动打包成电子书
+  ebooks:
+    enabled: true
+    formats:
+      - "mobi"
+      - "pdf"
+      - ""

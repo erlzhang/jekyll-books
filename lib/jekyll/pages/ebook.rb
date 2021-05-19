@@ -3,14 +3,14 @@ module Jekyll
     def initialize(site, params)
       @site = site
       @base = site.source
-      @dir  = File.join(params["destination"], "ebooks")
+      @dir  = params["destination"]
       @name = "#{params["name"]}.md"
 
       self.process(@name)
 
-      self.data = params["book"]
+      self.data = {}
       self.data["name"] = params["name"]
-      self.data["layout"] = 'ebook' #temp
+      self.data["layout"] = params["layout"] #temp
     end
   end
 end

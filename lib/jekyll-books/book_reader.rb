@@ -24,9 +24,11 @@ class BookReader
     recursive_read_chapters(summary.read, 1, book_page)
     add_prev_and_next
 
-    pages << ebook_page
+    if params["ebook"]["enabled"]
+      pages << ebook_page
 
-    ebook_page.data["book"] = book_page
+      ebook_page.data["book"] = book_page
+    end
 
     pages
   end
@@ -93,9 +95,15 @@ class BookReader
   end
 
   def ebook_page
+    default_setting = {
+      "layout" => "ebook",
+      "destination" => "ebooks"
+    }
     @ebook_page ||= Jekyll::EbookPage.new(
       site,
-      params.merge({
+      default_setting
+        .merge(params["ebook"])
+        .merge({
         "name" => name
       })
     )
