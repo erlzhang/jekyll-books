@@ -24,7 +24,7 @@ class BookReader
     recursive_read_chapters(summary.read, 1, book_page)
     add_prev_and_next
 
-    if params["ebook"]["enabled"]
+    if params["ebook"] && params["ebook"]["enabled"]
       pages << ebook_page
 
       ebook_page.data["book"] = book_page
